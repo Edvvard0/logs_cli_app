@@ -1,51 +1,69 @@
 import argparse
 import os
-from typing import Type
 
 from reports.base import BaseReport
 from reports.handlers import HandlersReport
-from utils.create_handlers import create_handlers
 
-REPORT_CLASSES: dict[str, Type[BaseReport]] = {
-    "handlers": HandlersReport
-}
+
+REPORT_CLASSES = {"handlers": HandlersReport}
+
 
 def validate_files(file_paths: list[str]) -> list[str]:
-    valid_paths = []
-    for path in file_paths:
-        if not os.path.isfile(path):
-            raise ValueError(f"путь к файлу указан не корректно ({path})")
-        else:
-            valid_paths.append(path)
-    return valid_paths
+    """
+    Validates a list of file paths, ensuring they exist and are files.
+
+    Args:
+        file_paths (list[str]): List of file paths to validate.
+
+    Returns:
+        list[str]: List of valid file paths.
+
+    Raises:
+        ValueError: If a file path does not exist or is not a file.
+    """
+
+    invalid_paths = [path for path in file_paths if not os.path.isfile(path)]
+    if invalid_paths:
+        raise ValueError(f"The file path is not specified correctly ({invalid_paths})")
+    return file_paths
 
 
-def validate_reports(report: str):
-    if report not in REPORT_CLASSES:
-        raise ValueError(f"Данного отчета не существует ({report})")
+def get_report_class(report_name: str) -> BaseReport:
+    """
+    Checks if there is such a report in REPORT_CLASSES
+
+    Arguments:
+        report_name(str): The name of the report
+
+    Returns:
+        BaseReport: a class report that inherits from the BaseReport class
+
+    Raises:
+        ValueError: If a report with this name does not exist
+    """
+
+    if report_name not in REPORT_CLASSES:
+        raise ValueError(f"This report does not exist({report_name})")
+    return REPORT_CLASSES[report_name]
 
 
 def main():
-    parser = argparse.ArgumentParser(description='My example explanation')
+    parser = argparse.ArgumentParser()
 
-    parser.add_argument('file_names', nargs='*')
+    parser.add_argument("file_paths", nargs="*")
     parser.add_argument(
-        '--report',
+        "--report",
         type=str,
         default="handlers",
-        help='provide an string (default: "handlers")'
+        help='provide an string (default: "handlers")',
     )
     args = parser.parse_args()
 
-    # print(args.file_names)
-    lst_filenames = validate_files(args.file_names)
-    validate_reports(args.report)
+    file_paths = validate_files(args.file_names)
+    report = get_report_class(args.report)
 
-    # convert_data = convert_log_to_class(lst_filenames)
-    # print(convert_data)
-    create_handlers(lst_filenames)
-    handler = create_handlers(lst_filenames)
-    handler.generate()
+    report = report.create_report(file_paths)
+    report.generate()
 
 
 if __name__ == "__main__":

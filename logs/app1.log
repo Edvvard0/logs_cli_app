@@ -1,0 +1,6 @@
+2025-03-28 12:44:46,000 INFO django.request: GET /api/v1/reviews/ 204 OK [192.168.1.59]
+2025-03-28 12:21:51,000 INFO django.request: GET /admin/dashboard/ 200 OK [192.168.1.68]
+2025-03-28 12:05:13,000 INFO django.request: GET /api/v1/reviews/ 201 OK [192.168.1.97]
+2025-03-28 12:11:57,000 ERROR django.request: Internal Server Error: /admin/dashboard/ [192.168.1.29] - ValueError: Invalid input data
+2025-03-28 12:37:43,000 INFO django.request: GET /api/v1/users/ 204 OK [192.168.1.36]
+2025-03-28 12:01:42,000 WARNING django.security: IntegrityError: duplicate key value violates unique constraint
