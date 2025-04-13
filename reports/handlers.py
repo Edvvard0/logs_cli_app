@@ -45,6 +45,7 @@ class HandlersReport(BaseReport):
                 totals.level_increment(level)
                 total_requests += 1
 
+        handlers_data = dict(sorted(handlers_data.items()))
         table.columns = list(handlers_data.values())
         handlers = HandlersReport(
             total_requests=total_requests, table=table, totals_data=totals
