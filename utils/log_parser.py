@@ -16,3 +16,4 @@ def parse_log_files(file_paths: list[str]) -> list[str]:
         logs.extend(log)
 
     return logs
+
