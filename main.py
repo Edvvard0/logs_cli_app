@@ -59,7 +59,7 @@ def main():
     )
     args = parser.parse_args()
 
-    file_paths = validate_files(args.file_names)
+    file_paths = validate_files(args.file_paths)
     report = get_report_class(args.report)
 
     report = report.create_report(file_paths)
