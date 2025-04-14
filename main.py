@@ -8,7 +8,7 @@ from reports.handlers import HandlersReport
 REPORT_CLASSES = {"handlers": HandlersReport}
 
 
-def validate_files(file_paths: list[str]) -> list[str]:
+def validate_files(file_paths: list[str]):
     """
     Validates a list of file paths, ensuring they exist and are files.
 
@@ -22,10 +22,9 @@ def validate_files(file_paths: list[str]) -> list[str]:
         ValueError: If a file path does not exist or is not a file.
     """
 
-    invalid_paths = [path for path in file_paths if not os.path.isfile(path)]
-    if invalid_paths:
-        raise ValueError(f"The file path is not specified correctly ({invalid_paths})")
-    return file_paths
+    for path in file_paths:
+        if not os.path.isfile(path):
+            raise ValueError(f"The file path is not specified correctly ({path})")
 
 
 def get_report_class(report_name: str) -> BaseReport:
@@ -59,10 +58,10 @@ def main():
     )
     args = parser.parse_args()
 
-    file_paths = validate_files(args.file_paths)
+    validate_files(args.file_paths)
     report = get_report_class(args.report)
 
-    report = report.create_report(file_paths)
+    report = report.create_report(args.file_paths)
     report.generate()
 
 

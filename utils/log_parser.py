@@ -17,3 +17,4 @@ def parse_log_files(file_paths: list[str]) -> list[str]:
 
     return logs
 
+# print(parse_log_files("tests/test_data/app1.log"))
